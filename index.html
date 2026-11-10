@@ -1,1 +1,52 @@
-<h1>Destornillador CRAFTSMAN</h1>
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Destornillador CRAFTSMAN · Victoria Garcia Prez</title>
+<script type="module" src="./model-viewer.min.js"></script>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f5f3ed;color:#20201e;font:16px/1.5 "Helvetica Neue",Arial,sans-serif}header,main,footer{width:min(1280px,92%);margin:auto}header,footer,.bar{display:flex;align-items:center;justify-content:space-between;gap:15px}header{padding:23px 0;border-bottom:1px solid #b9b8b3}header strong{letter-spacing:.06em}a{color:inherit;text-underline-offset:4px}.hero{display:grid;grid-template-columns:.95fr 1.05fr;gap:4vw;align-items:center;padding:44px 0}.eyebrow,.bar,footer{font:600 .75rem/1.45 monospace;letter-spacing:.075em}.eyebrow{color:#ab3025}h1{font-size:clamp(2.7rem,4.9vw,5.8rem);line-height:1.02;letter-spacing:-.065em;margin:18px 0 28px}h1 span{display:block;color:#b83025}.author{margin-top:38px}.panel{position:relative;isolation:isolate;background:#e4e1d8;border-radius:4px;overflow:hidden}.bar{padding:16px 20px;border-bottom:1px solid #cac7c0}.stage{position:relative;height:clamp(310px,49vh,550px);background:radial-gradient(ellipse,#faf9f4,transparent 70%)}model-viewer,.poster{width:100%;height:100%}.poster{position:absolute;inset:0;object-fit:contain;padding:20px;pointer-events:none}.ready .poster{display:none}button{cursor:pointer;color:inherit;background:#faf9f3;border:1px solid #aba9a2;border-radius:24px;padding:9px 15px;font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #ba3023;outline-offset:2px}.controls{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px}.ar{position:absolute;right:12px;bottom:10px}.info{border-top:1px solid #b9b8b3;display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:36px 0}.info h2{font-size:2rem;line-height:1.15;margin:0}.info p{margin:0;max-width:55ch}footer{border-top:1px solid #b9b8b3;padding:19px 0}button:disabled{opacity:.5;cursor:default}@media(max-width:760px){.hero,.info{grid-template-columns:1fr;gap:20px}.hero{padding:25px 0}.author{margin:12px 0}.stage{height:340px}header{font-size:.85rem}.bar{font-size:.68rem}.info{padding:25px 0}h1{margin:10px 0 16px}}
+</style>
+</head>
+<body><header><strong>VGP / Diseño Industrial</strong><a href="#proyecto">El proyecto ↓</a></header>
+<main><section class="hero"><div><p class="eyebrow">ESTUDIO DE PRODUCTO</p><h1>Destornillador <span>CRAFTSMAN</span></h1><p>Explorá la forma del mango, el relieve del agarre y el encastre del portapuntas.</p><p class="author"><strong>Victoria Garcia Prez</strong><br>Universidad de Palermo</p></div>
+<div class="panel"><div class="bar"><span>VISTA DEL PRODUCTO</span><span id="status" role="status">CARGANDO 3D…</span></div>
+<div class="stage"><model-viewer id="viewer" src="./destornillador.glb" camera-controls touch-action="pan-y" camera-orbit="28deg 72deg auto" shadow-intensity=".45" ar ar-modes="webxr scene-viewer quick-look" alt="Destornillador Craftsman con mango negro, anillo rojo y portapuntas metálico"><button class="ar" slot="ar-button">Ver en mi espacio ↗</button></model-viewer><img class="poster" src="./destornillador.png" alt="Vista del modelo de Fusion"></div>
+<div class="controls"><button id="spin" aria-pressed="false" disabled>Giro automático</button><button id="reset" disabled>Restablecer vista</button></div></div></section>
+<section id="proyecto" class="info"><h2>Del objeto al modelo.</h2><p>Estudio de un destornillador CRAFTSMAN modelado en Autodesk Fusion. Arrastrá sobre el modelo para verlo desde otro ángulo. Para acercarte al detalle del mango, usá la ruedita o ampliá con dos dedos.</p></section></main>
+<footer><span>VICTORIA GARCIA PREZ</span><span>DISEÑO INDUSTRIAL · UP</span></footer>
+<script>
+const viewer=document.querySelector('#viewer');
+const statusLabel=document.querySelector('#status');
+const spin=document.querySelector('#spin');
+const reset=document.querySelector('#reset');
+viewer.addEventListener('load',()=>{
+ document.querySelector('.panel').classList.add('ready');
+ statusLabel.textContent='3D INTERACTIVO';
+ spin.disabled=false;
+ reset.disabled=false;
+});
+function showPoster(){
+ document.querySelector('.panel').classList.remove('ready');
+ statusLabel.textContent='VISTA PREVIA';
+ spin.disabled=true;
+ reset.disabled=true;
+}
+viewer.addEventListener('error',showPoster);
+window.addEventListener('load',()=>{if(!customElements.get('model-viewer'))showPoster()});
+spin.onclick=()=>{
+ viewer.autoRotate=!viewer.autoRotate;
+ spin.setAttribute('aria-pressed',String(viewer.autoRotate));
+ spin.textContent=viewer.autoRotate?'Pausar giro':'Giro automático';
+};
+reset.onclick=()=>{
+ viewer.autoRotate=false;
+ spin.setAttribute('aria-pressed','false');
+ spin.textContent='Giro automático';
+ viewer.cameraTarget='auto auto auto';
+ viewer.fieldOfView='auto';
+ viewer.cameraOrbit='28deg 72deg auto';
+ viewer.resetTurntableRotation();
+};
+</script></body></html>
